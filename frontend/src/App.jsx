@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import LoginForm from './components/LoginForm'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Index from './pages/Index';
 import './App.css'
 
 function App() {
@@ -7,7 +8,12 @@ function App() {
 
   return (
     <>
-      <LoginForm />
+    <Router>
+      <Routes>
+        <Route path='/' element={<Index />}/>
+        <Route path='/login' element={<Login/>}/>
+      </Routes>
+    </Router>
     </>
   )
 }

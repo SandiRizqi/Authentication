@@ -3,7 +3,7 @@ import { Eye, EyeOff, User, Lock } from 'lucide-react';
 import useAuth from './hook/useAuth';
 
 const LoginForm = () => {
-  const {isAuthenticated, user} = useAuth();
+  const {isAuthenticated, login, user} = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -29,20 +29,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/credentials/login/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", // Include cookies
-        body: JSON.stringify(formData),
-    });
-
-    if (response.ok) {
-        console.log("Login successful!");
-    } else {
-        console.error("Login failed");
-    }
-      // Add your login logic here
+       await login(formData);
     }
   };
 
@@ -62,6 +49,11 @@ const LoginForm = () => {
       }));
     }
   };
+
+
+  // if (isAuthenticated) {
+  //   return window.location.replace('/')
+  // }
 
   return (
     <div className="flex h-screen w-screen">
