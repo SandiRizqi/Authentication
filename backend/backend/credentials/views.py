@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from django.contrib.auth.models import User
 
 # 🔹 Login View (Set JWT in HTTP-only Cookie)
 @api_view(["POST"])
@@ -15,7 +16,7 @@ def login_view(request):
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
-        response = Response({"message": "Login successful"})
+        response = Response({"message": "Login successful", "username": username})
         response.set_cookie("access_token", access_token, httponly=True, samesite="Lax")
         response.set_cookie("refresh_token", str(refresh), httponly=True, samesite="Lax")
         return response
@@ -40,7 +41,21 @@ def check_authentication(request):
 
     try:
         access_token = AccessToken(token)
-        return Response({"is_authenticated": True, "username": access_token["user_id"]})
+        user_id = access_token["user_id"]
+        
+        # Fetch the user from the database using the user_id
+        user = User.objects.get(id=user_id)
+        
+        # Return user details (customize the fields as needed)
+        user_details = {
+            "is_authenticated": True,
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            # Add other user fields if necessary
+        }
+        return Response(user_details, status=200)
     except Exception:
         return Response({"is_authenticated": False}, status=401)
 

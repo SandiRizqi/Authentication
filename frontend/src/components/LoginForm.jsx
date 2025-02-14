@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock } from 'lucide-react';
+import useAuth from './hook/useAuth';
 
 const LoginForm = () => {
+  const {isAuthenticated, user} = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
