@@ -1,0 +1,19 @@
+# Frontend
+frontend/node_modules
+frontend/dist
+frontend/.env
+frontend/.env.local
+
+# Backend
+backend/__pycache__/
+backend/*.pyc
+backend/db.sqlite3
+backend/.env
+backend/venv/
+backend/migrations/__pycache__/
+*.pyc
+*.pyo
+__pycache__/
+*.so
+.Python
+.env
